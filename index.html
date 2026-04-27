@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>P2 – Schmierekescht</title>
+<title>P2 – Schmierekescht – Spiller</title>
 
-<!-- ===== GOOGLE ANALYTICS ===== -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P672MJ10YJ"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -21,346 +21,700 @@ gtag('config', 'G-P672MJ10YJ');
   font-weight:bold;
 }
 
-/* ===== P2 COLOR THEME (BLUE) ===== */
 :root{
-  --main:#9ec9ff;
-  --light:#eaf4ff;
-  --dark:#5aa0ff;
+  --green-light:#d8ebd4;
+  --green-mid:#8cc987;
+  --green-dark:#4f9c72;
 
-  --ink:#1f1f1f;
+  --ink:#183525;
   --white:#fff;
-  --bad:#ffcccc;
   --ok:#b7f0c8;
+  --bad:#ffcccc;
 
   --border:3px;
+  --radius:18px;
   --shadow:0 10px 24px rgba(0,0,0,.08);
-  --r:18px;
+  --pad:clamp(10px,2.2vw,16px);
 }
 
-*{box-sizing:border-box; margin:0; padding:0;}
-
-body{
+*{box-sizing:border-box; user-select:none;}
+html,body{
+  margin:0; height:100%;
   font-family:'Schoulschrëft', Arial, sans-serif;
-  background:linear-gradient(135deg,var(--main),var(--light));
+  background:linear-gradient(135deg,var(--green-light),var(--green-mid));
   color:var(--ink);
 }
 
-/* ===== NAV ===== */
 .top{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  padding:10px;
+  position:sticky; top:8px; z-index:10;
+  display:flex; gap:10px; justify-content:center; align-items:center;
+  background:#fff; border:3px solid var(--green-dark);
+  border-radius:16px; padding:.28rem .7rem; margin:10px auto;
+  width:fit-content;
+  box-shadow:var(--shadow);
 }
 
 .iconBtn{
-  border:var(--border) solid var(--ink);
-  background:#fff;
-  padding:8px 14px;
-  border-radius:12px;
-  cursor:pointer;
+  font-size:1.25rem; border:3px solid var(--ink);
+  background:#fff; border-radius:12px; cursor:pointer;
+  padding:.2rem .55rem;
 }
 
+#flowLabel{font-size:1.05rem;}
+.hidden{display:none!important;}
+
 .wrap{
+  min-height:calc(100vh - 70px);
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:16px;
-  padding:20px;
+  gap:1.1rem;
+  padding:var(--pad);
 }
 
-.hidden{display:none}
+h1{
+  margin:.2rem 0;
+  font-size:clamp(1.6rem,3.8vw,2.6rem);
+  text-align:center;
+}
 
-/* ===== GRID ===== */
 .grid{
+  width:min(980px,96vw);
   display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:12px;
-  width:min(900px,95vw);
+  gap:clamp(.55rem,1.6vw,1rem);
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+}
+
+@media (max-width:860px){
+  .grid{grid-template-columns:repeat(4, minmax(0, 1fr));}
 }
 
 .imgToken{
-  border:4px solid var(--dark);
-  border-radius:16px;
   background:#fff;
+  border:5px solid var(--green-mid);
+  border-radius:18px;
   aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+}
+
+.imgToken img{
+  width:82%;
+  height:82%;
+  object-fit:contain;
+}
+
+.flash-good{background:var(--ok)!important;}
+.flash-bad{background:var(--bad)!important;}
+
+.soundBtn{
+  width:64px;
+  height:48px;
+  border:3px solid var(--ink);
+  border-radius:14px;
+  background:#fff;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+}
+
+.soundBtn img{
+  width:90%;
+  height:90%;
+  object-fit:contain;
+}
+
+.bigBox{
+  width:min(40vmin,360px,85vw);
+  aspect-ratio:1/1;
+  border:8px solid var(--green-mid);
+  border-radius:26px;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  box-shadow:var(--shadow);
+}
+
+.bigBox img{
+  width:68%;
+  height:68%;
+  object-fit:contain;
+}
+
+.slots,.letters{
   display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
   justify-content:center;
-  align-items:center;
+  max-width:min(980px,96vw);
+}
+
+.slot{
+  min-width:2.6rem;
+  min-height:3.2rem;
+  border-bottom:5px solid var(--ink);
+  font-size:2rem;
+  display:grid;
+  place-items:center;
   cursor:pointer;
 }
 
-.imgToken img{width:75%}
+.letter{
+  border:3px solid var(--ink);
+  border-radius:12px;
+  padding:.25rem .55rem;
+  font-size:1.9rem;
+  cursor:pointer;
+  background:#fff;
+  box-shadow:var(--shadow);
+}
 
-/* ===== MEMORY ===== */
+.btn{
+  border:3px solid var(--ink);
+  background:#fff;
+  border-radius:14px;
+  padding:.4rem .85rem;
+  cursor:pointer;
+  font-family:'Schoulschrëft';
+  font-size:1.05rem;
+  box-shadow:var(--shadow);
+}
+
 .memGrid{
+  width:min(980px,96vw);
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  width:min(900px,95vw);
+  gap:clamp(.6rem,1.8vw,1rem);
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width:780px){
+  .memGrid{grid-template-columns:repeat(3,1fr);}
+}
+
+@media (max-width:520px){
+  .memGrid{grid-template-columns:repeat(2,1fr);}
 }
 
 .card{
   aspect-ratio:5/3;
   perspective:1000px;
+  cursor:pointer;
 }
 
 .inner{
+  position:relative;
   width:100%;
   height:100%;
-  position:relative;
+  transition:.28s;
   transform-style:preserve-3d;
-  transition:.3s;
 }
 
-.flipped .inner{transform:rotateY(180deg)}
+.flipped .inner{transform:rotateY(180deg);}
 
 .face{
   position:absolute;
   inset:0;
-  border:4px solid var(--dark);
-  border-radius:14px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  backface-visibility:hidden;
+  border-radius:16px;
+  border:5px solid var(--green-mid);
   background:#fff;
+  display:grid;
+  place-items:center;
+  backface-visibility:hidden;
+  box-shadow:var(--shadow);
 }
 
 .front{
-  background:url('https://i.postimg.cc/gnrf0LLw/cardback-p2.png') center/70% no-repeat;
+  background:#fff url('https://i.postimg.cc/gnrf0LLw/cardback-p2.png') center/68% no-repeat;
 }
 
-.back{
-  transform:rotateY(180deg);
-}
+.back{transform:rotateY(180deg);}
 
 .memWord{
-  font-size:1.4rem;
+  font-size:1.6rem;
   text-align:center;
+  padding:.4rem;
 }
 
-/* ===== INPUT GAME ===== */
-.inputBox{
-  border:4px solid var(--dark);
-  padding:10px;
-  font-size:1.4rem;
-  border-radius:12px;
-  text-align:center;
+.sortLayout{
+  width:min(980px,96vw);
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:.8rem;
 }
 
-/* ===== BUTTON ===== */
-.btn{
-  border:var(--border) solid var(--ink);
+@media (max-width:820px){
+  .sortLayout{grid-template-columns:1fr; max-width:560px;}
+}
+
+.dropCol{
   background:#fff;
-  padding:8px 14px;
-  border-radius:12px;
-  cursor:pointer;
+  border:8px solid var(--green-mid);
+  border-radius:22px;
+  padding:.7rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.6rem;
+  min-height:230px;
+  box-shadow:var(--shadow);
 }
+
+.dropCol img{
+  max-width:140px;
+  height:auto;
+}
+
+.dropInner{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  justify-content:center;
+  padding-bottom:.4rem;
+}
+
+.sortPool{
+  margin-top:.8rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+  justify-content:center;
+  max-width:min(980px,96vw);
+}
+
+.sortItem{
+  width:64px;
+  height:64px;
+  border:4px solid var(--green-mid);
+  border-radius:16px;
+  background:#fff;
+  cursor:grab;
+  display:grid;
+  place-items:center;
+  box-shadow:var(--shadow);
+}
+
+.sortItem img{
+  width:84%;
+  height:84%;
+  object-fit:contain;
+}
+
+.pulseOk{outline:4px solid var(--ok); outline-offset:2px;}
+.pulseBad{outline:4px solid var(--bad); outline-offset:2px;}
 </style>
 </head>
 
 <body>
 
 <div class="top">
-<button class="iconBtn" id="prev">◀</button>
-<span id="flowLabel">1. Spill</span>
-<button class="iconBtn" id="next">▶</button>
+  <button class="iconBtn" id="prev">◀</button>
+  <span id="flowLabel">1. Spill</span>
+  <button class="iconBtn" id="next">▶</button>
 </div>
 
-<!-- GAME 1 -->
 <section class="wrap" id="g1">
-<h1>Lauschter a klick</h1>
-<div class="grid" id="grid1"></div>
-<button class="btn" id="play1">🔊</button>
+  <h1>Lauschter a klick</h1>
+  <div class="grid" id="grid1"></div>
+  <button class="soundBtn" id="play1">
+    <img src="https://i.postimg.cc/ZqG1TRbC/lauschter-p2.png" alt="">
+  </button>
 </section>
 
-<!-- GAME 2 -->
 <section class="wrap hidden" id="g2">
-<h1>Memory</h1>
-<div class="memGrid" id="memGrid"></div>
+  <h1>Memory</h1>
+  <div class="memGrid" id="memGrid"></div>
+  <button class="btn" id="memReset">↻ Reset</button>
 </section>
 
-<!-- GAME 3 (NEW P2 STYLE) -->
 <section class="wrap hidden" id="g3">
-<h1>Schreif d’Wuert</h1>
-<img id="writeImg" style="width:180px">
-<input class="inputBox" id="writeInput" placeholder="Schreif hei">
-<button class="btn" id="checkWrite">Check</button>
-<button class="btn" id="playWrite">🔊</button>
+  <h1>Schreif d’Wuert</h1>
+  <div class="bigBox"><img id="spellImg" alt=""></div>
+  <div class="slots" id="spellSlots"></div>
+  <div class="letters" id="spellLetters"></div>
+  <div style="display:flex; gap:.8rem; flex-wrap:wrap; justify-content:center;">
+    <button class="btn" id="spellReset">↻ Reset</button>
+    <button class="btn" id="spellHear">🔊 Lauschter</button>
+    <button class="btn" id="spellNext">Weider</button>
+  </div>
+</section>
+
+<section class="wrap hidden" id="g4">
+  <h1>Sortéier no Genre</h1>
+
+  <div class="sortLayout">
+    <div class="dropCol" data-cat="masc">
+      <img src="https://i.postimg.cc/MvXhGffV/mannlech.png" alt="">
+      <div class="dropInner"></div>
+    </div>
+
+    <div class="dropCol" data-cat="fem">
+      <img src="https://i.postimg.cc/7fbpLJJz/weiblech.png" alt="">
+      <div class="dropInner"></div>
+    </div>
+
+    <div class="dropCol" data-cat="neut">
+      <img src="https://i.postimg.cc/3dWPw00g/sachlech.png" alt="">
+      <div class="dropInner"></div>
+    </div>
+  </div>
+
+  <div class="sortPool" id="sortPool"></div>
+  <button class="btn" id="sortReset">↻ Reset</button>
 </section>
 
 <audio id="speaker"></audio>
 
 <script>
-
-/* ===== DATA ===== */
-const AUDIO_BASE="https://github.com/albrechtclaire1007/p1schmierekescht/raw/refs/heads/main/";
+const AUDIO="https://github.com/albrechtclaire1007/p1schmierekescht/raw/refs/heads/main/";
 
 const ITEMS=[
-{ id:'banann', word:'Banann', img:'https://i.postimg.cc/4nMSGNrS/banann.png', audio:'p1_banann.mp3' },
-{ id:'botter', word:'Botter', img:'https://i.postimg.cc/VdCHkP82/botter.png', audio:'p1_botter.mp3' },
-{ id:'keis', word:'Kéis', img:'https://i.postimg.cc/ZCdD5zm4/keis.png', audio:'p1_keis.mp3' },
-{ id:'kichelchen', word:'Kichelchen', img:'https://i.postimg.cc/svh0gCzg/kichelchen.png', audio:'p1_kichelchen.mp3' },
-{ id:'metsch', word:'Metsch', img:'https://i.postimg.cc/Czq6xp0f/metsch.png', audio:'p1_metsch.mp3' },
-{ id:'schockela', word:'Schockela', img:'https://i.postimg.cc/9r7NQH29/schockela.png', audio:'p1_schockel.mp3' }
+  {id:'banann',word:'eng Banann',spell:'Banann',img:'https://i.postimg.cc/4nMSGNrS/banann.png',audio:'p1_banann.mp3',g:'fem'},
+  {id:'botter',word:'Botter',spell:'Botter',img:'https://i.postimg.cc/VdCHkP82/botter.png',audio:'p1_botter.mp3',g:'masc'},
+  {id:'gebees',word:'e Gebees',spell:'Gebees',img:'https://i.postimg.cc/N5HPjvtY/gebees.png',audio:'p1_gebees.mp3',g:'neut'},
+  {id:'kamellen',word:'Kamellen',spell:'Kamellen',img:'https://i.postimg.cc/Ln108FSp/kamellen.png',audio:'p1_kamell.mp3',g:'fem'},
+  {id:'keis',word:'e Kéis',spell:'Kéis',img:'https://i.postimg.cc/ZCdD5zm4/keis.png',audio:'p1_keis.mp3',g:'masc'},
+  {id:'kichelchen',word:'e Kichelchen',spell:'Kichelchen',img:'https://i.postimg.cc/svh0gCzg/kichelchen.png',audio:'p1_kichelchen.mp3',g:'neut'},
+  {id:'metsch',word:'eng Metsch',spell:'Metsch',img:'https://i.postimg.cc/Czq6xp0f/metsch.png',audio:'p1_metsch.mp3',g:'fem'},
+  {id:'schmier',word:'Schmier',spell:'Schmier',img:'https://i.postimg.cc/3dvbxQhv/schmier.png',audio:'p1_schmier.mp3',g:'fem'},
+  {id:'schockela',word:'Schockela',spell:'Schockela',img:'https://i.postimg.cc/9r7NQH29/schockela.png',audio:'p1_schockel.mp3',g:'masc'},
+  {id:'schockelasbotter',word:'Schockelasbotter',spell:'Schockelasbotter',img:'https://i.postimg.cc/Bjf787Zx/schockelasbotter.png',audio:'p1_schockelasbotter.mp3',g:'masc'},
+  {id:'uebst',word:'Uebst',spell:'Uebst',img:'https://i.postimg.cc/hXRZJZ4M/uebst.png',audio:'p1_uebst.mp3',g:'neut'},
+  {id:'zoossiss',word:'eng Zoossiss',spell:'Zoossiss',img:'https://i.postimg.cc/4YR2K24Q/zoossiss.png',audio:'p1_zoossiss.mp3',g:'fem'}
 ];
 
 const speaker=document.getElementById('speaker');
 
-function playAudio(f){
-speaker.src=AUDIO_BASE+f;
-speaker.currentTime=0;
-speaker.play();
+function play(a){
+  speaker.src=AUDIO+a;
+  speaker.currentTime=0;
+  speaker.play();
 }
 
-function shuffle(a){
-return a.sort(()=>Math.random()-0.5);
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 }
 
-/* ===== NAV ===== */
-const pages=['g1','g2','g3'];
+function flash(el, ok=true){
+  el.classList.remove('pulseOk','pulseBad');
+  el.classList.add(ok?'pulseOk':'pulseBad');
+  setTimeout(()=>el.classList.remove('pulseOk','pulseBad'),450);
+}
+
+const pages=['g1','g2','g3','g4'];
 let p=0;
-
-function show(i){
-p=Math.max(0,Math.min(pages.length-1,i));
-pages.forEach((id,n)=>{
-document.getElementById(id).classList.toggle('hidden',n!==p);
-});
-document.getElementById('flowLabel').textContent=(p+1)+". Spill";
-}
 
 document.getElementById('prev').onclick=()=>show(p-1);
 document.getElementById('next').onclick=()=>show(p+1);
 
+function show(i){
+  p=Math.max(0,Math.min(pages.length-1,i));
+  pages.forEach((id,n)=>document.getElementById(id).classList.toggle('hidden',n!==p));
+  document.getElementById('flowLabel').textContent=(p+1)+'. Spill';
+}
+
 show(0);
 
-/* ===== GAME 1 ===== */
-const grid1=document.getElementById('grid1');
-let target;
+const grid=document.getElementById('grid1');
+let bag1=[];
+let target1=null;
 
 function initG1(){
-grid1.innerHTML="";
-shuffle(ITEMS).forEach(it=>{
-const d=document.createElement('div');
-d.className='imgToken';
-d.innerHTML=`<img src="${it.img}">`;
-d.onclick=()=>{
-if(it===target){
-playAudio(it.audio);
-nextG1();
-}
-};
-grid1.appendChild(d);
-});
-nextG1();
+  grid.innerHTML='';
+  bag1=shuffle(ITEMS);
+
+  ITEMS.forEach(it=>{
+    const b=document.createElement('div');
+    b.className='imgToken';
+    b.innerHTML=`<img src="${it.img}" alt="">`;
+
+    b.onclick=()=>{
+      if(!target1) return;
+
+      if(it.id===target1.id){
+        b.classList.add('flash-good');
+        setTimeout(()=>b.classList.remove('flash-good'),450);
+        nextG1();
+      }else{
+        b.classList.add('flash-bad');
+        setTimeout(()=>b.classList.remove('flash-bad'),450);
+      }
+    };
+
+    grid.appendChild(b);
+  });
+
+  nextG1();
 }
 
 function nextG1(){
-target=ITEMS[Math.floor(Math.random()*ITEMS.length)];
-playAudio(target.audio);
+  if(bag1.length===0) bag1=shuffle(ITEMS);
+  target1=bag1.pop();
+  play(target1.audio);
 }
 
-document.getElementById('play1').onclick=()=>playAudio(target.audio);
+document.getElementById('play1').onclick=()=>target1 && play(target1.audio);
 
 initG1();
-/* ===== GAME 2 (MEMORY P2 STYLE) ===== */
+
 const memGrid=document.getElementById('memGrid');
-let first=null;
-let lock=false;
+const memReset=document.getElementById('memReset');
+let memFirst=null;
+let memLock=false;
+let memMatched=0;
 
-function initMemory(){
-memGrid.innerHTML="";
-first=null;
-lock=false;
+function buildMemory(){
+  memGrid.innerHTML='';
+  memFirst=null;
+  memLock=false;
+  memMatched=0;
 
-const deck=shuffle(ITEMS.slice(0,6).flatMap(it=>[
-{key:it.id,type:'img',it},
-{key:it.id,type:'word',it}
-]));
+  const base=shuffle(ITEMS).slice(0,8);
 
-deck.forEach(c=>{
-const card=document.createElement('div');
-card.className='card';
+  const deck=shuffle(base.flatMap(it=>[
+    {key:it.id,type:'img',it},
+    {key:it.id,type:'word',it}
+  ]));
 
-card.innerHTML=`
-<div class="inner">
-  <div class="face front"></div>
-  <div class="face back">
-    ${c.type==='img'
-      ? `<img src="${c.it.img}" style="width:70%">`
-      : `<div class="memWord">${c.it.word}</div>`
+  deck.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='card';
+
+    const backContent = c.type==='img'
+      ? `<img src="${c.it.img}" style="width:78%;height:78%;object-fit:contain" alt="">`
+      : `<div class="memWord">${c.it.word}</div>`;
+
+    card.innerHTML=`
+      <div class="inner">
+        <div class="face front"></div>
+        <div class="face back">${backContent}</div>
+      </div>
+    `;
+
+    card.onclick=()=>flipCard(card,c);
+    memGrid.appendChild(card);
+  });
+}
+
+function flipCard(card,c){
+  if(memLock) return;
+  if(card.classList.contains('matched')) return;
+  if(card.classList.contains('flipped')) return;
+
+  card.classList.add('flipped');
+
+  if(c.type==='word') play(c.it.audio);
+
+  if(!memFirst){
+    memFirst={card,c};
+    return;
+  }
+
+  memLock=true;
+
+  const a=memFirst;
+  const b={card,c};
+
+  const isMatch = a.c.key===b.c.key && a.c.type!==b.c.type;
+
+  if(isMatch){
+    a.card.classList.add('matched');
+    b.card.classList.add('matched');
+    memMatched++;
+    memFirst=null;
+    memLock=false;
+
+    if(memMatched===8){
+      setTimeout(buildMemory,700);
     }
-  </div>
-</div>
-`;
+  }else{
+    setTimeout(()=>{
+      a.card.classList.remove('flipped');
+      b.card.classList.remove('flipped');
+      memFirst=null;
+      memLock=false;
+    },650);
+  }
+}
 
-card.onclick=()=>flip(card,c);
-memGrid.appendChild(card);
+memReset.onclick=buildMemory;
+buildMemory();
+
+let spellBag=[];
+let cur=null;
+
+const slots=document.getElementById('spellSlots');
+const letters=document.getElementById('spellLetters');
+const img=document.getElementById('spellImg');
+
+function initSpellBag(){
+  spellBag=shuffle(ITEMS);
+}
+
+function buildSpell(){
+  if(spellBag.length===0) initSpellBag();
+
+  cur=spellBag.pop();
+  img.src=cur.img;
+
+  slots.innerHTML='';
+  letters.innerHTML='';
+
+  const chars=[...cur.spell];
+
+  chars.forEach((_,i)=>{
+    const s=document.createElement('div');
+    s.className='slot';
+    s.dataset.i=i;
+
+    s.onclick=()=>{
+      if(!s.textContent) return;
+
+      const ch=s.textContent;
+      s.textContent='';
+
+      const l=document.createElement('div');
+      l.className='letter';
+      l.textContent=ch;
+      l.onclick=()=>placeLetter(l);
+
+      letters.appendChild(l);
+    };
+
+    slots.appendChild(s);
+  });
+
+  shuffle(chars).forEach(ch=>{
+    const l=document.createElement('div');
+    l.className='letter';
+    l.textContent=ch;
+    l.onclick=()=>placeLetter(l);
+    letters.appendChild(l);
+  });
+}
+
+function placeLetter(letterEl){
+  const empty=[...slots.children].find(s=>!s.textContent);
+  if(!empty) return;
+
+  empty.textContent=letterEl.textContent;
+  letterEl.remove();
+
+  checkSpell();
+}
+
+function checkSpell(){
+  const built=[...slots.children].map(s=>s.textContent).join('');
+
+  if(built.length!==cur.spell.length) return;
+
+  if(built===cur.spell){
+    slots.classList.add('pulseOk');
+    setTimeout(()=>{
+      slots.classList.remove('pulseOk');
+      buildSpell();
+    },550);
+  }else{
+    slots.classList.add('pulseBad');
+    setTimeout(()=>slots.classList.remove('pulseBad'),300);
+  }
+}
+
+document.getElementById('spellHear').onclick=()=>cur && play(cur.audio);
+document.getElementById('spellNext').onclick=buildSpell;
+document.getElementById('spellReset').onclick=buildSpell;
+
+initSpellBag();
+buildSpell();
+
+const pool=document.getElementById('sortPool');
+const sortReset=document.getElementById('sortReset');
+
+let selectedSort=null;
+
+function buildSort(){
+  document.querySelectorAll('.dropInner').forEach(d=>d.innerHTML='');
+  pool.innerHTML='';
+  selectedSort=null;
+
+  ITEMS.forEach(it=>{
+    const b=document.createElement('div');
+    b.className='sortItem';
+    b.draggable=true;
+    b.dataset.g=it.g;
+    b.dataset.id=it.id;
+
+    b.innerHTML=`<img src="${it.img}" alt="">`;
+
+    b.addEventListener('dragstart',(e)=>{
+      e.dataTransfer.setData('text/plain', it.id);
+      e.dataTransfer.setData('cat', it.g);
+      selectedSort=b;
+    });
+
+    b.onclick=()=>{
+      if(selectedSort===b){
+        selectedSort=null;
+        flash(b,true);
+      }else{
+        selectedSort=b;
+        flash(b,true);
+      }
+    };
+
+    pool.appendChild(b);
+  });
+}
+
+document.querySelectorAll('.dropCol').forEach(col=>{
+  col.addEventListener('dragover',(e)=>e.preventDefault());
+
+  col.addEventListener('drop',(e)=>{
+    e.preventDefault();
+
+    const id=e.dataTransfer.getData('text/plain');
+    const cat=e.dataTransfer.getData('cat');
+    const want=col.dataset.cat;
+
+    const itemEl=[...document.querySelectorAll('.sortItem')].find(x=>x.dataset.id===id);
+
+    if(!itemEl) return;
+
+    if(cat===want){
+      col.querySelector('.dropInner').appendChild(itemEl);
+      flash(col,true);
+    }else{
+      flash(col,false);
+      flash(itemEl,false);
+    }
+  });
+
+  col.onclick=()=>{
+    if(!selectedSort) return;
+
+    const want=col.dataset.cat;
+    const cat=selectedSort.dataset.g;
+
+    if(cat===want){
+      col.querySelector('.dropInner').appendChild(selectedSort);
+      flash(col,true);
+      selectedSort=null;
+    }else{
+      flash(col,false);
+      flash(selectedSort,false);
+    }
+  };
 });
-}
 
-function flip(card,c){
-if(lock || card.classList.contains('flipped')) return;
-
-card.classList.add('flipped');
-
-if(c.type==='word') playAudio(c.it.audio);
-
-if(!first){
-first={card,c};
-return;
-}
-
-lock=true;
-
-if(first.c.key===c.key && first.c.type!==c.type){
-setTimeout(()=>{
-card.style.opacity=.6;
-first.card.style.opacity=.6;
-first=null;
-lock=false;
-},300);
-}else{
-setTimeout(()=>{
-card.classList.remove('flipped');
-first.card.classList.remove('flipped');
-first=null;
-lock=false;
-},600);
-}
-}
-
-initMemory();
-
-/* ===== GAME 3 (WRITE WORD) ===== */
-const writeImg=document.getElementById('writeImg');
-const writeInput=document.getElementById('writeInput');
-const checkWrite=document.getElementById('checkWrite');
-const playWrite=document.getElementById('playWrite');
-
-let current;
-
-function nextWrite(){
-current=ITEMS[Math.floor(Math.random()*ITEMS.length)];
-writeImg.src=current.img;
-writeInput.value="";
-}
-
-checkWrite.onclick=()=>{
-const val=writeInput.value.trim().toLowerCase();
-if(val===current.word.toLowerCase()){
-writeInput.style.background="#b7f0c8";
-setTimeout(nextWrite,600);
-}else{
-writeInput.style.background="#ffcccc";
-}
-};
-
-playWrite.onclick=()=>playAudio(current.audio);
-
-nextWrite();
-
+sortReset.onclick=buildSort;
+buildSort();
 </script>
+
 </body>
 </html>
