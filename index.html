@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="lb">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>P2 – Schmierekescht</title>
+
+<!-- ===== GOOGLE ANALYTICS ===== -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P672MJ10YJ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-P672MJ10YJ');
+</script>
+
+<style>
+@font-face{
+  font-family:'Schoulschrëft';
+  src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
+  font-weight:bold;
+}
+
+/* ===== P2 COLOR THEME (BLUE) ===== */
+:root{
+  --main:#9ec9ff;
+  --light:#eaf4ff;
+  --dark:#5aa0ff;
+
+  --ink:#1f1f1f;
+  --white:#fff;
+  --bad:#ffcccc;
+  --ok:#b7f0c8;
+
+  --border:3px;
+  --shadow:0 10px 24px rgba(0,0,0,.08);
+  --r:18px;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+
+body{
+  font-family:'Schoulschrëft', Arial, sans-serif;
+  background:linear-gradient(135deg,var(--main),var(--light));
+  color:var(--ink);
+}
+
+/* ===== NAV ===== */
+.top{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  padding:10px;
+}
+
+.iconBtn{
+  border:var(--border) solid var(--ink);
+  background:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  padding:20px;
+}
+
+.hidden{display:none}
+
+/* ===== GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:12px;
+  width:min(900px,95vw);
+}
+
+.imgToken{
+  border:4px solid var(--dark);
+  border-radius:16px;
+  background:#fff;
+  aspect-ratio:1/1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.imgToken img{width:75%}
+
+/* ===== MEMORY ===== */
+.memGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  width:min(900px,95vw);
+}
+
+.card{
+  aspect-ratio:5/3;
+  perspective:1000px;
+}
+
+.inner{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:.3s;
+}
+
+.flipped .inner{transform:rotateY(180deg)}
+
+.face{
+  position:absolute;
+  inset:0;
+  border:4px solid var(--dark);
+  border-radius:14px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  backface-visibility:hidden;
+  background:#fff;
+}
+
+.front{
+  background:url('https://i.postimg.cc/gnrf0LLw/cardback-p2.png') center/70% no-repeat;
+}
+
+.back{
+  transform:rotateY(180deg);
+}
+
+.memWord{
+  font-size:1.4rem;
+  text-align:center;
+}
+
+/* ===== INPUT GAME ===== */
+.inputBox{
+  border:4px solid var(--dark);
+  padding:10px;
+  font-size:1.4rem;
+  border-radius:12px;
+  text-align:center;
+}
+
+/* ===== BUTTON ===== */
+.btn{
+  border:var(--border) solid var(--ink);
+  background:#fff;
+  padding:8px 14px;
+  border-radius:12px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+<button class="iconBtn" id="prev">◀</button>
+<span id="flowLabel">1. Spill</span>
+<button class="iconBtn" id="next">▶</button>
+</div>
+
+<!-- GAME 1 -->
+<section class="wrap" id="g1">
+<h1>Lauschter a klick</h1>
+<div class="grid" id="grid1"></div>
+<button class="btn" id="play1">🔊</button>
+</section>
+
+<!-- GAME 2 -->
+<section class="wrap hidden" id="g2">
+<h1>Memory</h1>
+<div class="memGrid" id="memGrid"></div>
+</section>
+
+<!-- GAME 3 (NEW P2 STYLE) -->
+<section class="wrap hidden" id="g3">
+<h1>Schreif d’Wuert</h1>
+<img id="writeImg" style="width:180px">
+<input class="inputBox" id="writeInput" placeholder="Schreif hei">
+<button class="btn" id="checkWrite">Check</button>
+<button class="btn" id="playWrite">🔊</button>
+</section>
+
+<audio id="speaker"></audio>
+
+<script>
+
+/* ===== DATA ===== */
+const AUDIO_BASE="https://github.com/albrechtclaire1007/p1schmierekescht/raw/refs/heads/main/";
+
+const ITEMS=[
+{ id:'banann', word:'Banann', img:'https://i.postimg.cc/4nMSGNrS/banann.png', audio:'p1_banann.mp3' },
+{ id:'botter', word:'Botter', img:'https://i.postimg.cc/VdCHkP82/botter.png', audio:'p1_botter.mp3' },
+{ id:'keis', word:'Kéis', img:'https://i.postimg.cc/ZCdD5zm4/keis.png', audio:'p1_keis.mp3' },
+{ id:'kichelchen', word:'Kichelchen', img:'https://i.postimg.cc/svh0gCzg/kichelchen.png', audio:'p1_kichelchen.mp3' },
+{ id:'metsch', word:'Metsch', img:'https://i.postimg.cc/Czq6xp0f/metsch.png', audio:'p1_metsch.mp3' },
+{ id:'schockela', word:'Schockela', img:'https://i.postimg.cc/9r7NQH29/schockela.png', audio:'p1_schockel.mp3' }
+];
+
+const speaker=document.getElementById('speaker');
+
+function playAudio(f){
+speaker.src=AUDIO_BASE+f;
+speaker.currentTime=0;
+speaker.play();
+}
+
+function shuffle(a){
+return a.sort(()=>Math.random()-0.5);
+}
+
+/* ===== NAV ===== */
+const pages=['g1','g2','g3'];
+let p=0;
+
+function show(i){
+p=Math.max(0,Math.min(pages.length-1,i));
+pages.forEach((id,n)=>{
+document.getElementById(id).classList.toggle('hidden',n!==p);
+});
+document.getElementById('flowLabel').textContent=(p+1)+". Spill";
+}
+
+document.getElementById('prev').onclick=()=>show(p-1);
+document.getElementById('next').onclick=()=>show(p+1);
+
+show(0);
+
+/* ===== GAME 1 ===== */
+const grid1=document.getElementById('grid1');
+let target;
+
+function initG1(){
+grid1.innerHTML="";
+shuffle(ITEMS).forEach(it=>{
+const d=document.createElement('div');
+d.className='imgToken';
+d.innerHTML=`<img src="${it.img}">`;
+d.onclick=()=>{
+if(it===target){
+playAudio(it.audio);
+nextG1();
+}
+};
+grid1.appendChild(d);
+});
+nextG1();
+}
+
+function nextG1(){
+target=ITEMS[Math.floor(Math.random()*ITEMS.length)];
+playAudio(target.audio);
+}
+
+document.getElementById('play1').onclick=()=>playAudio(target.audio);
+
+initG1();
+/* ===== GAME 2 (MEMORY P2 STYLE) ===== */
+const memGrid=document.getElementById('memGrid');
+let first=null;
+let lock=false;
+
+function initMemory(){
+memGrid.innerHTML="";
+first=null;
+lock=false;
+
+const deck=shuffle(ITEMS.slice(0,6).flatMap(it=>[
+{key:it.id,type:'img',it},
+{key:it.id,type:'word',it}
+]));
+
+deck.forEach(c=>{
+const card=document.createElement('div');
+card.className='card';
+
+card.innerHTML=`
+<div class="inner">
+  <div class="face front"></div>
+  <div class="face back">
+    ${c.type==='img'
+      ? `<img src="${c.it.img}" style="width:70%">`
+      : `<div class="memWord">${c.it.word}</div>`
+    }
+  </div>
+</div>
+`;
+
+card.onclick=()=>flip(card,c);
+memGrid.appendChild(card);
+});
+}
+
+function flip(card,c){
+if(lock || card.classList.contains('flipped')) return;
+
+card.classList.add('flipped');
+
+if(c.type==='word') playAudio(c.it.audio);
+
+if(!first){
+first={card,c};
+return;
+}
+
+lock=true;
+
+if(first.c.key===c.key && first.c.type!==c.type){
+setTimeout(()=>{
+card.style.opacity=.6;
+first.card.style.opacity=.6;
+first=null;
+lock=false;
+},300);
+}else{
+setTimeout(()=>{
+card.classList.remove('flipped');
+first.card.classList.remove('flipped');
+first=null;
+lock=false;
+},600);
+}
+}
+
+initMemory();
+
+/* ===== GAME 3 (WRITE WORD) ===== */
+const writeImg=document.getElementById('writeImg');
+const writeInput=document.getElementById('writeInput');
+const checkWrite=document.getElementById('checkWrite');
+const playWrite=document.getElementById('playWrite');
+
+let current;
+
+function nextWrite(){
+current=ITEMS[Math.floor(Math.random()*ITEMS.length)];
+writeImg.src=current.img;
+writeInput.value="";
+}
+
+checkWrite.onclick=()=>{
+const val=writeInput.value.trim().toLowerCase();
+if(val===current.word.toLowerCase()){
+writeInput.style.background="#b7f0c8";
+setTimeout(nextWrite,600);
+}else{
+writeInput.style.background="#ffcccc";
+}
+};
+
+playWrite.onclick=()=>playAudio(current.audio);
+
+nextWrite();
+
+</script>
+</body>
+</html>
